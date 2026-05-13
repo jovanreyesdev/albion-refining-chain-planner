@@ -19,6 +19,7 @@ import StatPill from "./components/StatPill";
 import ShoppingList from "./components/ShoppingList";
 import PlansBreakdown from "./components/PlansBreakdown";
 import SnapshotMenu from "./components/SnapshotMenu";
+import FloatingLinks from "./components/FloatingLinks";
 
 // =============================================================================
 // REFINING CHAIN PLANNER — Albion Online (Drag & Drop UI)
@@ -409,6 +410,9 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* Floating community + support buttons (bottom-right) */}
+      <FloatingLinks />
 
       {/* Quantity prompt modal */}
       {qtyPrompt && (
