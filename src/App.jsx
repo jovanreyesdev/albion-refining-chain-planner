@@ -22,6 +22,7 @@ import SnapshotMenu from "./components/SnapshotMenu";
 import FloatingLinks from "./components/FloatingLinks";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 import { useTranslation } from "./i18n/useTranslation";
+import { track } from "./analytics";
 
 // =============================================================================
 // REFINING CHAIN PLANNER — Albion Online (Drag & Drop UI)
@@ -40,7 +41,12 @@ export default function App() {
   const [topTab, setTopTab] = useState("resource"); // "refined" | "resource"
   // Cascade mode: when ON, lower-tier output reduces higher-tier shortfalls
   // (assumes the user buys all needed lower-tier feeders).
-  const [cascadeMode, setCascadeMode] = useState(loadCascadeMode);
+  const [cascadeMode, setCascadeModeRaw] = useState(loadCascadeMode);
+  // Wrapper that fires an analytics event whenever cascade mode is toggled.
+  const setCascadeMode = (next) => {
+    track("cascade_toggle", { enabled: !!next });
+    setCascadeModeRaw(next);
+  };
   const [subTabRefined, setSubTabRefined] = useState(REFINED[0].key);
   const [subTabResource, setSubTabResource] = useState(RESOURCES[0].key);
   const [draggingItem, setDraggingItem] = useState(null);
@@ -67,6 +73,9 @@ export default function App() {
   // -------- inventory mutations --------
   const addOrUpdateSlot = (kind, familyKey, tier, ench, qty) => {
     if (!qty || qty <= 0) return;
+    // Track the activation moment — first time someone adds anything to inventory.
+    // Also captures kind/tier/ench so we can see *what* people are refining most.
+    track("inventory_add", { kind, familyKey, tier, ench, isFirst: slots.length === 0 });
     // If a slot with same identity already exists, ADD to it (like Albion stacks).
     setSlots((prev) => {
       const existing = prev.find(
@@ -97,6 +106,7 @@ export default function App() {
   const clearAll = () => {
     if (slots.length === 0) return;
     if (!confirm(t("confirmClear"))) return;
+    track("inventory_clear", { itemCount: slots.length });
     setSlots([]);
   };
 
@@ -104,6 +114,7 @@ export default function App() {
   const saveSnapshot = () => {
     const name = prompt(t("promptSnapshotName"), `Inv ${new Date().toLocaleDateString()}`);
     if (!name) return;
+    track("snapshot_save", { itemCount: slots.length });
     setSnapshots((prev) => [
       { id: Date.now(), name, slots: JSON.parse(JSON.stringify(slots)) },
       ...prev,
@@ -114,6 +125,7 @@ export default function App() {
     const snap = snapshots.find((s) => s.id === id);
     if (!snap) return;
     if (!confirm(t("confirmLoadSnapshot", { name: snap.name }))) return;
+    track("snapshot_load");
     setSlots(snap.slots);
   };
 

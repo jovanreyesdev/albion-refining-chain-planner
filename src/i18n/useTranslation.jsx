@@ -11,6 +11,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import dict from "./translations";
+import { track } from "../analytics";
 
 const LANG_KEY = "rcp:lang";
 
@@ -32,6 +33,10 @@ export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState(detectBrowserLang);
 
   const setLang = (next) => {
+    // Track only when there's an actual change — avoids noise from no-op clicks.
+    if (next !== lang) {
+      track("language_change", { from: lang, to: next });
+    }
     setLangState(next);
     try { localStorage.setItem(LANG_KEY, next); } catch { /* noop */ }
   };

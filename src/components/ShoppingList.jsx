@@ -4,6 +4,7 @@ import { tierRoman } from "./constants";
 import { iconUrl } from "./iconResolver";
 import { SHOPPING_CHECKED_KEY, loadCheckedSet } from "./storage";
 import { useTranslation } from "../i18n/useTranslation";
+import { track } from "../analytics";
 
 /**
  * Stable key for grouping/deduping shopping items.
@@ -70,8 +71,12 @@ export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
   const toggleChecked = (key) => {
     setChecked((prev) => {
       const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
+      const wasChecked = next.has(key);
+      if (wasChecked) next.delete(key);
       else next.add(key);
+      // Track only the "checked" direction — that's the meaningful "I bought it" signal.
+      // Unchecking is usually a mistake correction and adds noise.
+      if (!wasChecked) track("shopping_item_checked");
       return next;
     });
   };
