@@ -1,13 +1,16 @@
+import { useTranslation } from "../i18n/useTranslation";
+
 /**
  * Top-level tabs for the picker: Resource vs Refined.
  * Active tab has an amber underline and a slightly lighter background.
  */
 export default function TopTabs({ topTab, setTopTab }) {
+  const tr = useTranslation();
   return (
     <div className="flex border-b border-amber-900/40 bg-stone-950/70">
       {[
-        { key: "resource", label: "Resource" },
-        { key: "refined", label: "Refined" },
+        { key: "resource", label: tr("tabResource") },
+        { key: "refined", label: tr("tabRefined") },
       ].map((t) => (
         <button
           key={t.key}

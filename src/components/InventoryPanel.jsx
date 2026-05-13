@@ -1,6 +1,7 @@
 import invSlotBg from "../assets/inv-slot.jpg";
 import { RESOURCES, REFINED, tierLabel, tierRoman } from "./constants";
 import { iconUrl } from "./iconResolver";
+import { useTranslation } from "../i18n/useTranslation";
 
 // Inventory uses CSS auto-fill so columns adapt to container width.
 // Minimum slot size keeps slots looking like Albion's gear grid when squeezed.
@@ -14,6 +15,7 @@ const INVENTORY_MIN_SLOTS = 48; // always show at least this many cells
 export default function InventoryPanel({
   slots, onDrop, onDragOver, onClickSlot, onRemoveSlot,
 }) {
+  const t = useTranslation();
   // Pad to next row of 8 above the filled count, with a minimum floor.
   const padTo = Math.max(
     INVENTORY_MIN_SLOTS,
@@ -49,7 +51,7 @@ export default function InventoryPanel({
       </div>
       {slots.length === 0 && (
         <div className="text-center text-amber-800 text-sm italic mt-3">
-          Drag items from the picker into these slots, or click a picker item to add directly.
+          {t("inventoryEmptyHint")}
         </div>
       )}
     </div>

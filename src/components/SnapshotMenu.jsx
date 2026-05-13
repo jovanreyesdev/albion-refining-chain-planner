@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import ThemedButton from "./ThemedButton";
+import { useTranslation } from "../i18n/useTranslation";
 
 /**
  * Dropdown menu that lists saved inventory snapshots.
  * Closes on outside click. Each row is clickable to load, with an × to delete.
  */
 export default function SnapshotMenu({ snapshots, onLoad, onDelete }) {
+  const t = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -20,13 +22,13 @@ export default function SnapshotMenu({ snapshots, onLoad, onDelete }) {
   return (
     <div className="relative" ref={ref}>
       <ThemedButton onClick={() => setOpen(!open)}>
-        Snapshots {snapshots.length > 0 && `(${snapshots.length})`}
+        {t("btnSnapshots")} {snapshots.length > 0 && `(${snapshots.length})`}
       </ThemedButton>
       {open && (
         <div className="absolute right-0 mt-1 w-72 bg-stone-900 border border-amber-700/40 rounded shadow-2xl z-30 max-h-80 overflow-y-auto">
           {snapshots.length === 0 ? (
             <div className="px-3 py-3 text-xs text-amber-500/60 italic">
-              No snapshots yet.
+              {t("snapshotsEmpty")}
             </div>
           ) : (
             <ul className="divide-y divide-stone-800">

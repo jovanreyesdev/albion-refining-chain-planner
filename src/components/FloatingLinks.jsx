@@ -1,3 +1,5 @@
+import { useTranslation } from "../i18n/useTranslation";
+
 /**
  * Floating quick-access buttons pinned to the bottom-right of the viewport.
  *
@@ -8,20 +10,21 @@
  * z-index sits above page content but below the qty modal overlay (which uses z-50).
  */
 export default function FloatingLinks() {
+  const t = useTranslation();
   return (
     <div className="fixed bottom-4 right-4 z-40 flex flex-col gap-3">
       <FloatingLink
         href="https://discord.gg/RT6CdKRn"
         bgClass="bg-[#5865F2] hover:bg-[#4752C4]"
-        label="Join the Discord"
-        title="Join the community on Discord"
+        label={t("linkDiscord")}
+        title={t("linkDiscord")}
         icon={<DiscordIcon />}
       />
       <FloatingLink
         href="https://ko-fi.com/medjoskambag"
         bgClass="bg-[#FF5E5B] hover:bg-[#E04E4B]"
-        label="Buy me a coffee"
-        title="Support the project on Ko-fi"
+        label={t("linkKofi")}
+        title={t("linkKofi")}
         icon={<KofiIcon />}
       />
     </div>

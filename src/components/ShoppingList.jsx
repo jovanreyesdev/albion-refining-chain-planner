@@ -3,6 +3,7 @@ import invSlotBg from "../assets/inv-slot.jpg";
 import { tierRoman } from "./constants";
 import { iconUrl } from "./iconResolver";
 import { SHOPPING_CHECKED_KEY, loadCheckedSet } from "./storage";
+import { useTranslation } from "../i18n/useTranslation";
 
 /**
  * Stable key for grouping/deduping shopping items.
@@ -23,6 +24,7 @@ function shoppingItemKey(it) {
  * calculation modes (described in cascade.js).
  */
 export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
+  const t = useTranslation();
   // Dedupe + sort. When multiple chains request the same item (e.g., T3 base
   // bars needed by both T4.2 and T4.3 chains, since they share the base T3
   // pool), we SUM the amounts — the user has to satisfy ALL the chains.
@@ -82,7 +84,7 @@ export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
       <div className="mb-5 p-4 bg-emerald-900/30 border border-emerald-700/40 rounded-lg">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <span className="text-emerald-200 text-sm">
-            ✓ All balanced — nothing else to buy. (Or your inventory is empty.)
+            {t("shoppingAllBalanced")}
           </span>
           <CascadeToggle cascadeMode={cascadeMode} setCascadeMode={setCascadeMode} />
         </div>
@@ -93,9 +95,13 @@ export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
   return (
     <div className="mb-5 bg-stone-900/60 border border-amber-700/50 rounded-lg p-4 shadow-xl">
       <h2 className="font-bold text-amber-100 mb-3 flex items-center gap-2 flex-wrap">
-        <span>🛒</span> Shopping List
+        <span>🛒</span> {t("shoppingTitle")}
         <span className="text-xs text-amber-500/70 font-normal">
-          ({checkedCount}/{grouped.length} done{allChecked ? " ✓" : ""})
+          {t("shoppingDoneOfTotal", {
+            done: checkedCount,
+            total: grouped.length,
+            checkmark: allChecked ? " ✓" : "",
+          })}
         </span>
         <div className="ml-auto flex items-center gap-4 flex-wrap">
           <CascadeToggle cascadeMode={cascadeMode} setCascadeMode={setCascadeMode} />
@@ -103,9 +109,9 @@ export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
             <button
               onClick={() => setChecked(new Set())}
               className="text-[11px] text-amber-400/80 hover:text-amber-200 underline underline-offset-2"
-              title="Uncheck all items"
+              title={t("shoppingResetChecks")}
             >
-              Reset checks
+              {t("shoppingResetChecks")}
             </button>
           )}
         </div>
@@ -145,7 +151,21 @@ export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className={`text-sm font-semibold truncate ${isChecked ? "text-emerald-300 line-through" : "text-amber-100"}`}>
-                  Buy <span className={isChecked ? "" : "text-rose-300"}>{it.amount.toLocaleString()}</span> × {it.label}
+                  {/* Translation handles word order. We split on the {amount}
+                      placeholder to keep the count in a rose-colored span. */}
+                  {(() => {
+                    const tpl = t("shoppingBuyLine", { amount: "__AMT__", label: it.label });
+                    const [before, after = ""] = tpl.split("__AMT__");
+                    return (
+                      <>
+                        {before}
+                        <span className={isChecked ? "" : "text-rose-300"}>
+                          {it.amount.toLocaleString()}
+                        </span>
+                        {after}
+                      </>
+                    );
+                  })()}
                 </div>
                 <div className={`text-[10px] truncate ${isChecked ? "text-emerald-500/50" : "text-amber-500/60"}`}>
                   {it.reasons[0]}
@@ -165,14 +185,11 @@ export default function ShoppingList({ items, cascadeMode, setCascadeMode }) {
  * Used in both the empty-state banner and the populated header.
  */
 function CascadeToggle({ cascadeMode, setCascadeMode }) {
+  const t = useTranslation();
   return (
     <label
       className="inline-flex items-center gap-2 text-xs text-amber-300/90 cursor-pointer select-none"
-      title={
-        cascadeMode
-          ? "ON: When you refine low-tier items, the result is used for high-tier items.\n\nExample:\n• You have 70 T7 Hide and 300 T8 Hide.\n• Refining 70 T7 Hide makes 14 T7 Leather.\n• Those 14 T7 Leather are used for the 300 T8 Hide.\n• So you only need to buy 46 more T7 Leather (not 60)."
-          : "OFF: Each tier is calculated alone. Refining low-tier items does NOT help with high-tier items.\n\nExample:\n• You have 70 T7 Hide and 300 T8 Hide.\n• T7 step says: buy 14 T6 Leather.\n• T8 step says: buy 60 T7 Leather.\n• The 14 T7 Leather you make from T7 Hide is ignored."
-      }
+      title={cascadeMode ? t("cascadeTooltipOn") : t("cascadeTooltipOff")}
     >
       <input
         type="checkbox"
@@ -180,9 +197,9 @@ function CascadeToggle({ cascadeMode, setCascadeMode }) {
         onChange={(e) => setCascadeMode(e.target.checked)}
         className="w-3.5 h-3.5 accent-amber-400 cursor-pointer"
       />
-      <span className="font-semibold">Use lower tier output for higher tier</span>
+      <span className="font-semibold">{t("cascadeToggleLabel")}</span>
       <span className="text-amber-500/60 text-[10px]">
-        {cascadeMode ? "(ON — buy less)" : "(OFF — each tier alone)"}
+        {cascadeMode ? t("cascadeOn") : t("cascadeOff")}
       </span>
     </label>
   );

@@ -20,6 +20,8 @@ import ShoppingList from "./components/ShoppingList";
 import PlansBreakdown from "./components/PlansBreakdown";
 import SnapshotMenu from "./components/SnapshotMenu";
 import FloatingLinks from "./components/FloatingLinks";
+import LanguageSwitcher from "./components/LanguageSwitcher";
+import { useTranslation } from "./i18n/useTranslation";
 
 // =============================================================================
 // REFINING CHAIN PLANNER — Albion Online (Drag & Drop UI)
@@ -31,6 +33,7 @@ import FloatingLinks from "./components/FloatingLinks";
 // =============================================================================
 
 export default function App() {
+  const t = useTranslation();
   // -------- state --------
   const [slots, setSlots] = useState(loadSlots);
   const [snapshots, setSnapshots] = useState(loadSnapshots);
@@ -93,13 +96,13 @@ export default function App() {
 
   const clearAll = () => {
     if (slots.length === 0) return;
-    if (!confirm("Clear all inventory?")) return;
+    if (!confirm(t("confirmClear"))) return;
     setSlots([]);
   };
 
   // -------- snapshots --------
   const saveSnapshot = () => {
-    const name = prompt("Snapshot name:", `Inv ${new Date().toLocaleDateString()}`);
+    const name = prompt(t("promptSnapshotName"), `Inv ${new Date().toLocaleDateString()}`);
     if (!name) return;
     setSnapshots((prev) => [
       { id: Date.now(), name, slots: JSON.parse(JSON.stringify(slots)) },
@@ -110,7 +113,7 @@ export default function App() {
   const loadSnapshot = (id) => {
     const snap = snapshots.find((s) => s.id === id);
     if (!snap) return;
-    if (!confirm(`Load "${snap.name}"? Current inventory will be replaced.`)) return;
+    if (!confirm(t("confirmLoadSnapshot", { name: snap.name }))) return;
     setSlots(snap.slots);
   };
 
@@ -131,25 +134,39 @@ export default function App() {
   const plans = useMemo(() => cascadeAllChains(slots, cascadeMode), [slots, cascadeMode]);
 
   const shoppingItems = useMemo(() => {
+    // Family key → translation key for the short label.
+    const SHORT_KEY = {
+      metal_bars: "famMetalBars", leathers: "famLeather",
+      cloths: "famCloth", planks: "famPlank",
+      ores: "famOre", hides: "famHide",
+      fibers: "famFiber", woods: "famWood",
+    };
+    const localShort = (family) => t(SHORT_KEY[family.key] || "") || family.short;
+
     const items = [];
     for (const p of plans) {
       if (!p.hasInput) continue;
+      const rawShortLocal = localShort(p.rawFamily);
+      const refinedShortLocal = localShort(p.refinedFamily);
       for (const s of p.steps) {
         if (s.shortfallFeeder > 0) {
-          // Feeder enchantment: T4.x feeds from T3 base (.0), else uses p.ench.
           const feederEnch = s.feederUsesBase ? 0 : p.ench;
-          // Cascade mode: explain the math in the reason text.
-          let reason;
-          if (s.cascadeMode && s.cascadeCredit > 0) {
-            reason = `${s.baseShortfall} needed for ${s.label} ${p.rawFamily.short.toLowerCase()}, minus ${s.cascadeCredit} from lower-tier cascade`;
-          } else {
-            reason = `to refine remaining ${s.label} ${p.rawFamily.short.toLowerCase()}`;
-          }
+          const reason = (s.cascadeMode && s.cascadeCredit > 0)
+            ? t("cascadeReasonWithCredit", {
+                baseShortfall: s.baseShortfall,
+                tier: s.label,
+                family: rawShortLocal.toLowerCase(),
+                credit: s.cascadeCredit,
+              })
+            : t("cascadeReasonSimple", {
+                tier: s.label,
+                family: rawShortLocal.toLowerCase(),
+              });
           items.push({
             kind: "refined",
             family: p.refinedFamily,
             ench: feederEnch,
-            label: `${s.feederLabel} ${p.refinedFamily.short}`,
+            label: `${s.feederLabel} ${refinedShortLocal}`,
             amount: s.shortfallFeeder,
             reason,
             iconTier: s.feederTier,
@@ -164,9 +181,9 @@ export default function App() {
             kind: "raw",
             family: p.rawFamily,
             ench: p.ench,
-            label: `${s.rawSourceLabel} ${p.rawFamily.short}`,
+            label: `${s.rawSourceLabel} ${rawShortLocal}`,
             amount: s.shortfallRaw,
-            reason: `to fully use ${s.feederLabel} feeder`,
+            reason: t("cascadeReasonRaw", { feeder: s.feederLabel }),
             iconTier: rawTier,
             iconEnch: p.ench,
             iconFamily: p.rawFamily,
@@ -176,7 +193,7 @@ export default function App() {
       }
     }
     return items;
-  }, [plans]);
+  }, [plans, t]);
 
   const totals = useMemo(() => {
     let raw = 0, refined = 0;
@@ -306,16 +323,17 @@ export default function App() {
               className="text-3xl font-bold text-amber-100"
               style={{ textShadow: "0 2px 6px rgba(0,0,0,0.8)" }}
             >
-              Refining Chain Planner
+              {t("appTitle")}
             </h1>
             <p className="text-sm text-amber-200/70 mt-1 max-w-2xl">
-              Drag items from the picker onto your inventory below. The cascade plan and shopping list update live.
+              {t("appTagline")}
             </p>
           </div>
-          <div className="flex gap-2 text-xs">
-            <StatPill label="Raw" value={totals.raw} color="amber" />
-            <StatPill label="Refined" value={totals.refined} color="sky" />
-            <StatPill label="Will Produce" value={totals.produced} color="emerald" />
+          <div className="flex items-center gap-2 text-xs flex-wrap">
+            <LanguageSwitcher />
+            <StatPill label={t("statRaw")} value={totals.raw} color="amber" />
+            <StatPill label={t("statRefined")} value={totals.refined} color="sky" />
+            <StatPill label={t("statWillProduce")} value={totals.produced} color="emerald" />
           </div>
         </header>
 
@@ -344,12 +362,12 @@ export default function App() {
 
           <section className="flex-1 min-w-0 flex flex-col">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-bold text-amber-100">Your Inventory</h2>
+              <h2 className="text-lg font-bold text-amber-100">{t("inventoryHeading")}</h2>
               <div className="flex gap-2">
-                <ThemedButton onClick={saveSnapshot} title="Save current inventory">Save</ThemedButton>
+                <ThemedButton onClick={saveSnapshot} title={t("btnSave")}>{t("btnSave")}</ThemedButton>
                 <SnapshotMenu snapshots={snapshots} onLoad={loadSnapshot} onDelete={deleteSnapshot} />
                 {/* <ThemedButton onClick={exportJson} title="Export inventory + shopping list as JSON">Export</ThemedButton> */}
-                <ThemedButton onClick={clearAll} variant="danger" title="Clear all items">Clear</ThemedButton>
+                <ThemedButton onClick={clearAll} variant="danger" title={t("btnClear")}>{t("btnClear")}</ThemedButton>
               </div>
             </div>
             <div className="flex-1">
@@ -383,8 +401,8 @@ export default function App() {
         <PlansBreakdown plans={plans} />
 
         <footer className="mt-6 text-xs text-amber-700/60 text-center">
-          T2 = T1 raw ×2 · T3+ = (T-1) refined + T raw (×2, ×2, ×3, ×4, ×5, ×5)
-          <div className="mt-1">Inventory and snapshots are saved in your browser.</div>
+          {t("footerRecipe")}
+          <div className="mt-1">{t("footerStorage")}</div>
           {/* Community + support links — small, low-pressure. */}
           <div className="mt-3 flex items-center justify-center gap-5 flex-wrap">
             <a
@@ -392,20 +410,20 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-amber-500/80 hover:text-amber-300 transition"
-              title="Join the community on Discord"
+              title={t("linkDiscord")}
             >
               <span>💬</span>
-              <span>Join the Discord</span>
+              <span>{t("linkDiscord")}</span>
             </a>
             <a
               href="https://ko-fi.com/medjoskambag"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-amber-500/80 hover:text-amber-300 transition"
-              title="If this tool saved you time, you can buy me a coffee"
+              title={t("linkKofi")}
             >
               <span>☕</span>
-              <span>Buy me a coffee</span>
+              <span>{t("linkKofi")}</span>
             </a>
           </div>
         </footer>

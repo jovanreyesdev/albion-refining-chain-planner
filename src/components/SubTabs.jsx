@@ -1,5 +1,19 @@
 import { REFINED, RESOURCES } from "./constants";
 import { iconUrl } from "./iconResolver";
+import { useTranslation } from "../i18n/useTranslation";
+
+// Map family keys to translation keys so the tab label can be localized
+// while the underlying catalog (constants.js) stays language-agnostic.
+const FAMILY_LABEL_KEY = {
+  metal_bars: "famMetalBars",
+  leathers: "famLeather",
+  cloths: "famCloth",
+  planks: "famPlank",
+  ores: "famOre",
+  hides: "famHide",
+  fibers: "famFiber",
+  woods: "famWood",
+};
 
 /**
  * Sub-tab row for the picker. Shows the four material families for the
@@ -12,6 +26,7 @@ export default function SubTabs({
   subTabResource,
   setSubTabResource,
 }) {
+  const tr = useTranslation();
   const families = topTab === "refined" ? REFINED : RESOURCES;
   const active = topTab === "refined" ? subTabRefined : subTabResource;
   const setActive = topTab === "refined" ? setSubTabRefined : setSubTabResource;
@@ -38,7 +53,7 @@ export default function SubTabs({
             {sample && (
               <img src={sample} alt="" className="w-6 h-6 object-contain" />
             )}
-            {f.label}
+            {tr(FAMILY_LABEL_KEY[f.key] || "") || f.label}
           </button>
         );
       })}
