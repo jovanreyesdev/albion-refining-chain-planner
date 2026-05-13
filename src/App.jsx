@@ -309,7 +309,7 @@ export default function App() {
   // =================================================================
   return (
     <div
-      className="min-h-screen text-amber-50 p-4 sm:p-6"
+      className="min-h-screen text-amber-50 p-4 sm:p-6 pb-24 overflow-x-hidden"
       style={{
         background:
           "radial-gradient(ellipse at top, #2d2418 0%, #1a1410 50%, #0f0c08 100%)",
@@ -339,7 +339,7 @@ export default function App() {
 
         {/* Picker + Inventory: side-by-side on wide screens, stacked on narrow */}
         <div className="flex flex-col lg:flex-row gap-5 mb-5">
-          <section className="bg-[#C59F82] border-[7px] border-[#AF7F61] overflow-hidden shadow-xl lg:shrink-0">
+          <section className="bg-[#C59F82] border-[7px] border-[#AF7F61] overflow-hidden shadow-xl lg:shrink-0 min-w-0">
             <TopTabs topTab={topTab} setTopTab={setTopTab} />
             <SubTabs
               topTab={topTab}
@@ -361,7 +361,7 @@ export default function App() {
           </section>
 
           <section className="flex-1 min-w-0 flex flex-col">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-wrap items-center justify-between mb-2">
               <h2 className="text-lg font-bold text-amber-100">{t("inventoryHeading")}</h2>
               <div className="flex gap-2">
                 <ThemedButton onClick={saveSnapshot} title={t("btnSave")}>{t("btnSave")}</ThemedButton>

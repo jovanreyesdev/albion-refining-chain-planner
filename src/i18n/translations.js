@@ -30,7 +30,7 @@ const dict = {
   en: {
     appTitle: "Refining Chain Planner",
     appTagline:
-      "Drag items from the picker onto your inventory below. The cascade plan and shopping list update live.",
+      "You bring back a mix of resources from gathering — different tiers, different enchantments. To refine them all, you need to buy some lower-tier refined items from market. But doing the math by hand is slow and easy to get wrong. This tool does it for you. Drag your items in, and it shows a clean shopping list: exactly what to buy and how much.",
 
     statRaw: "Raw",
     statRefined: "Refined",
@@ -113,7 +113,7 @@ const dict = {
   zh: {
     appTitle: "精炼链规划器",
     appTagline:
-      "将物品从选择器拖到下方的库存中。精炼计划和购物清单会实时更新。",
+      "采集回来的资源往往是多种等级、多种附魔混在一起。要把它们全部精炼，就需要从市场购买一些低等级的精炼品。但是手工计算又慢又容易出错。这个工具帮你算好了：把物品拖进来，它会显示一份清晰的购物清单 —— 该买什么、买多少，一目了然。",
 
     statRaw: "原料",
     statRefined: "精炼品",
@@ -194,7 +194,7 @@ const dict = {
   th: {
     appTitle: "ตัวช่วยวางแผนการรีไฟน์",
     appTagline:
-      "ลากไอเทมจากแผงเลือกไปยังคลังด้านล่าง แผนการรีไฟน์และรายการซื้อจะอัปเดตทันที",
+      "คุณกลับมาจากการเก็บของพร้อมวัตถุดิบหลายเทียร์ หลายระดับเอนแชนต์ปนกัน การจะรีไฟน์ทั้งหมดต้องซื้อของรีไฟน์เทียร์ต่ำกว่าจากตลาดด้วย แต่การคำนวณด้วยมือนั้นช้าและผิดพลาดง่าย เครื่องมือนี้คำนวณให้คุณ ลากไอเทมเข้ามา แล้วมันจะแสดงรายการซื้อที่ชัดเจน: ต้องซื้ออะไรบ้างและจำนวนเท่าไร",
 
     statRaw: "วัตถุดิบ",
     statRefined: "รีไฟน์แล้ว",
@@ -276,7 +276,7 @@ const dict = {
   id: {
     appTitle: "Perencana Rantai Refining",
     appTagline:
-      "Seret item dari panel pemilih ke inventaris di bawah. Rencana refining dan daftar belanja diperbarui secara langsung.",
+      "Anda pulang dari mengumpulkan bahan dengan campuran sumber daya — berbagai tier, berbagai enchantment. Untuk merefine semuanya, Anda perlu membeli beberapa item refine tier rendah dari market. Tapi menghitung manual itu lambat dan mudah salah. Tool ini menghitungnya untuk Anda. Seret item Anda ke sini, dan tool akan menampilkan daftar belanja yang jelas: persis apa yang harus dibeli dan berapa banyak.",
 
     statRaw: "Mentah",
     statRefined: "Hasil Refine",

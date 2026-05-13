@@ -8,7 +8,7 @@ export default function StatPill({ label, value, color }) {
     emerald: "border-emerald-600/50 bg-emerald-900/30 text-emerald-200",
   };
   return (
-    <div className={`px-3 py-1.5 rounded border ${colors[color]}`}>
+    <div className={`px-3 py-1.5 rounded border min-w-18 ${colors[color]}`}>
       <div className="text-[9px] uppercase opacity-70">{label}</div>
       <div className="font-bold text-sm">{(value || 0).toLocaleString()}</div>
     </div>

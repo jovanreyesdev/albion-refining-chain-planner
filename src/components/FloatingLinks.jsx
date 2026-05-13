@@ -43,7 +43,8 @@ function FloatingLink({ href, bgClass, label, title, icon }) {
       target="_blank"
       rel="noopener noreferrer"
       title={title}
-      className={`group relative flex items-center justify-center w-12 h-12 rounded-full text-white shadow-lg
+      aria-label={title}
+      className={`group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full text-white shadow-lg
         transition-transform duration-200 hover:scale-110 ${bgClass}`}
     >
       {icon}
