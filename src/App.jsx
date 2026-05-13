@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   REFINED, RESOURCES, TIERS, REFINING_TIERS, tierLabel,
@@ -21,6 +21,7 @@ import PlansBreakdown from "./components/PlansBreakdown";
 import SnapshotMenu from "./components/SnapshotMenu";
 import FloatingLinks from "./components/FloatingLinks";
 import LanguageSwitcher from "./components/LanguageSwitcher";
+import FirstRunGuide, { GuideHelpButton } from "./components/FirstRunGuide";
 import { useTranslation } from "./i18n/useTranslation";
 import { track } from "./analytics";
 
@@ -52,6 +53,11 @@ export default function App() {
   const [draggingItem, setDraggingItem] = useState(null);
   // qtyPrompt shape: { mode: "add"|"edit", slotId?, kind, familyKey, tier, ench, defaultQty }
   const [qtyPrompt, setQtyPrompt] = useState(null);
+
+  // Refs used by the FirstRunGuide to position its bubble over the
+  // picker (step 1) and the inventory (step 2).
+  const pickerRef = useRef(null);
+  const inventoryRef = useRef(null);
 
   // -------- persistence --------
   useEffect(() => {
@@ -342,6 +348,7 @@ export default function App() {
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs flex-wrap">
+            <GuideHelpButton />
             <LanguageSwitcher />
             <StatPill label={t("statRaw")} value={totals.raw} color="amber" />
             <StatPill label={t("statRefined")} value={totals.refined} color="sky" />
@@ -351,7 +358,10 @@ export default function App() {
 
         {/* Picker + Inventory: side-by-side on wide screens, stacked on narrow */}
         <div className="flex flex-col lg:flex-row gap-5 mb-5">
-          <section className="bg-[#C59F82] border-[7px] border-[#AF7F61] overflow-hidden shadow-xl lg:shrink-0 min-w-0">
+          <section
+            ref={pickerRef}
+            className="bg-[#C59F82] border-[7px] border-[#AF7F61] overflow-hidden shadow-xl lg:shrink-0 min-w-0"
+          >
             <TopTabs topTab={topTab} setTopTab={setTopTab} />
             <SubTabs
               topTab={topTab}
@@ -382,7 +392,7 @@ export default function App() {
                 <ThemedButton onClick={clearAll} variant="danger" title={t("btnClear")}>{t("btnClear")}</ThemedButton>
               </div>
             </div>
-            <div className="flex-1">
+            <div ref={inventoryRef} className="flex-1">
               <InventoryPanel
                 slots={slots}
                 onDrop={handleDrop}
@@ -443,6 +453,15 @@ export default function App() {
 
       {/* Floating community + support buttons (bottom-right) */}
       <FloatingLinks />
+
+      {/* First-visit guide — auto-dismisses once user adds an item.
+          The bubble animates from the picker to the inventory to walk the eye
+          across the drag-and-drop interaction. */}
+      <FirstRunGuide
+        inventoryFilled={slots.length > 0}
+        pickerRef={pickerRef}
+        inventoryRef={inventoryRef}
+      />
 
       {/* Quantity prompt modal */}
       {qtyPrompt && (

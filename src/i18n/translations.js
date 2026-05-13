@@ -107,6 +107,14 @@ const dict = {
     famPlank: "Plank",
 
     enchBase: "Base",
+
+    // First-run guide — two-step animated tutorial
+    guideTitle: "Welcome — here's how it works",
+    guideStepPicker: "Pick an item from here…",
+    guideStepInventory: "…and drop it into your inventory.",
+    guideGotIt: "Got it",
+    guideDismiss: "Close",
+    guideHelpTooltip: "Show the welcome guide again",
   },
 
   // -------------------------------------------------------- SIMPLIFIED CHINESE
@@ -188,6 +196,14 @@ const dict = {
     famPlank: "木板",
 
     enchBase: "基础",
+
+    // First-run guide — two-step animated tutorial
+    guideTitle: "欢迎！来了解一下如何使用",
+    guideStepPicker: "从这里选择一个物品……",
+    guideStepInventory: "……然后拖到你的库存里。",
+    guideGotIt: "知道了",
+    guideDismiss: "关闭",
+    guideHelpTooltip: "再次显示欢迎指引",
   },
 
   // ------------------------------------------------------------------ THAI
@@ -270,6 +286,14 @@ const dict = {
     famPlank: "ไม้แปรรูป",
 
     enchBase: "พื้นฐาน",
+
+    // First-run guide — two-step animated tutorial
+    guideTitle: "ยินดีต้อนรับ — นี่คือวิธีใช้งาน",
+    guideStepPicker: "เลือกไอเทมจากตรงนี้…",
+    guideStepInventory: "…แล้วลากมาวางในคลังของคุณ",
+    guideGotIt: "เข้าใจแล้ว",
+    guideDismiss: "ปิด",
+    guideHelpTooltip: "แสดงคำแนะนำต้อนรับอีกครั้ง",
   },
 
   // ------------------------------------------------------ BAHASA INDONESIA
@@ -352,6 +376,14 @@ const dict = {
     famPlank: "Papan",
 
     enchBase: "Dasar",
+
+    // First-run guide — two-step animated tutorial
+    guideTitle: "Selamat datang — beginilah cara kerjanya",
+    guideStepPicker: "Pilih item dari sini…",
+    guideStepInventory: "…lalu seret ke inventaris Anda.",
+    guideGotIt: "Mengerti",
+    guideDismiss: "Tutup",
+    guideHelpTooltip: "Tampilkan panduan selamat datang lagi",
   },
 };
 
