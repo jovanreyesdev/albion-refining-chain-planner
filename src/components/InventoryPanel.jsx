@@ -97,7 +97,7 @@ function FilledSlot({ slot, onClick, onRemove }) {
         {tierRoman[slot.tier]}
       </span>
       <span
-        className="absolute bottom-0.5 right-0.5 text-xs font-bold text-white bg-black/70 px-1.5 rounded"
+        className="absolute bottom-0.5 right-0.5 text-xs text-white bg-black/70 px-1.5 rounded"
         style={{ textShadow: "0 1px 2px rgba(0,0,0,0.9)" }}
       >
         {slot.qty}

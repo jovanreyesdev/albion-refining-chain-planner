@@ -1,0 +1,8 @@
+# Refining Chain Planner — robots.txt
+# Allow all crawlers full access. There's nothing private here and we want
+# search engines to index the tool so Albion players can find it.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://refining-chain-planner.vercel.app/sitemap.xml

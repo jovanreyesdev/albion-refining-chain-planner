@@ -189,91 +189,91 @@ export default function App() {
   }, [slots, plans]);
 
   // -------- JSON export (for testing / sharing scenarios) --------
-  const exportJson = () => {
-    // Inventory with human-readable labels.
-    const inventory = slots.map((s) => {
-      const family =
-        s.kind === "raw"
-          ? RESOURCES.find((r) => r.key === s.familyKey)
-          : REFINED.find((r) => r.key === s.familyKey);
-      return {
-        kind: s.kind,
-        family: family?.label || s.familyKey,
-        familyKey: s.familyKey,
-        tier: s.tier,
-        ench: s.ench,
-        label: `${tierLabel(s.tier, s.ench)} ${family?.short || s.familyKey}`,
-        qty: s.qty,
-      };
-    });
+  // const exportJson = () => {
+  //   // Inventory with human-readable labels.
+  //   const inventory = slots.map((s) => {
+  //     const family =
+  //       s.kind === "raw"
+  //         ? RESOURCES.find((r) => r.key === s.familyKey)
+  //         : REFINED.find((r) => r.key === s.familyKey);
+  //     return {
+  //       kind: s.kind,
+  //       family: family?.label || s.familyKey,
+  //       familyKey: s.familyKey,
+  //       tier: s.tier,
+  //       ench: s.ench,
+  //       label: `${tierLabel(s.tier, s.ench)} ${family?.short || s.familyKey}`,
+  //       qty: s.qty,
+  //     };
+  //   });
 
-    // Dedupe + sum shopping items so the export matches what's on-screen.
-    const shoppingGrouped = {};
-    for (const it of shoppingItems) {
-      const key = `${it.iconKind}-${it.iconFamily.key}-${it.iconTier}-${it.iconEnch}`;
-      if (!shoppingGrouped[key]) {
-        shoppingGrouped[key] = {
-          kind: it.kind,
-          family: it.iconFamily.label,
-          familyKey: it.iconFamily.key,
-          tier: it.iconTier,
-          ench: it.iconEnch,
-          label: it.label,
-          amountNeeded: 0,
-          reasons: [],
-        };
-      }
-      shoppingGrouped[key].amountNeeded += it.amount;
-      shoppingGrouped[key].reasons.push(it.reason);
-    }
-    const shoppingList = Object.values(shoppingGrouped);
+  //   // Dedupe + sum shopping items so the export matches what's on-screen.
+  //   const shoppingGrouped = {};
+  //   for (const it of shoppingItems) {
+  //     const key = `${it.iconKind}-${it.iconFamily.key}-${it.iconTier}-${it.iconEnch}`;
+  //     if (!shoppingGrouped[key]) {
+  //       shoppingGrouped[key] = {
+  //         kind: it.kind,
+  //         family: it.iconFamily.label,
+  //         familyKey: it.iconFamily.key,
+  //         tier: it.iconTier,
+  //         ench: it.iconEnch,
+  //         label: it.label,
+  //         amountNeeded: 0,
+  //         reasons: [],
+  //       };
+  //     }
+  //     shoppingGrouped[key].amountNeeded += it.amount;
+  //     shoppingGrouped[key].reasons.push(it.reason);
+  //   }
+  //   const shoppingList = Object.values(shoppingGrouped);
 
-    const refiningPlan = plans
-      .filter((p) => p.hasInput)
-      .map((p) => ({
-        rawFamily: p.rawFamily.label,
-        refinedFamily: p.refinedFamily.label,
-        enchantment: p.ench,
-        steps: p.steps.map((s) => ({
-          tier: s.label,
-          rawNeededPerUnit: s.perUnit,
-          rawAvailable: s.rawHave,
-          rawUsed: s.rawUsed,
-          feederTier: s.feederLabel,
-          feederAvailable: s.feederHave === Infinity ? null : s.feederHave,
-          feederUsed: s.feederUsed,
-          produced: s.produced,
-          refinedRemainingAfter: s.refinedAfter,
-          shortfallFeeder: s.shortfallFeeder,
-          shortfallRaw: s.shortfallRaw,
-        })),
-      }));
+  //   const refiningPlan = plans
+  //     .filter((p) => p.hasInput)
+  //     .map((p) => ({
+  //       rawFamily: p.rawFamily.label,
+  //       refinedFamily: p.refinedFamily.label,
+  //       enchantment: p.ench,
+  //       steps: p.steps.map((s) => ({
+  //         tier: s.label,
+  //         rawNeededPerUnit: s.perUnit,
+  //         rawAvailable: s.rawHave,
+  //         rawUsed: s.rawUsed,
+  //         feederTier: s.feederLabel,
+  //         feederAvailable: s.feederHave === Infinity ? null : s.feederHave,
+  //         feederUsed: s.feederUsed,
+  //         produced: s.produced,
+  //         refinedRemainingAfter: s.refinedAfter,
+  //         shortfallFeeder: s.shortfallFeeder,
+  //         shortfallRaw: s.shortfallRaw,
+  //       })),
+  //     }));
 
-    const payload = {
-      exportedAt: new Date().toISOString(),
-      version: 1,
-      totals: {
-        rawItems: totals.raw,
-        refinedItems: totals.refined,
-        willProduce: totals.produced,
-      },
-      inventory,
-      refiningPlan,
-      shoppingList,
-    };
+  //   const payload = {
+  //     exportedAt: new Date().toISOString(),
+  //     version: 1,
+  //     totals: {
+  //       rawItems: totals.raw,
+  //       refinedItems: totals.refined,
+  //       willProduce: totals.produced,
+  //     },
+  //     inventory,
+  //     refiningPlan,
+  //     shoppingList,
+  //   };
 
-    const json = JSON.stringify(payload, null, 2);
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-    a.href = url;
-    a.download = `refining-plan-${stamp}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  //   const json = JSON.stringify(payload, null, 2);
+  //   const blob = new Blob([json], { type: "application/json" });
+  //   const url = URL.createObjectURL(blob);
+  //   const a = document.createElement("a");
+  //   const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+  //   a.href = url;
+  //   a.download = `refining-plan-${stamp}.json`;
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   document.body.removeChild(a);
+  //   URL.revokeObjectURL(url);
+  // };
 
   // -------- picker view derivation --------
   const currentFamily =
@@ -347,7 +347,7 @@ export default function App() {
               <div className="flex gap-2">
                 <ThemedButton onClick={saveSnapshot} title="Save current inventory">Save</ThemedButton>
                 <SnapshotMenu snapshots={snapshots} onLoad={loadSnapshot} onDelete={deleteSnapshot} />
-                <ThemedButton onClick={exportJson} title="Export inventory + shopping list as JSON">Export</ThemedButton>
+                {/* <ThemedButton onClick={exportJson} title="Export inventory + shopping list as JSON">Export</ThemedButton> */}
                 <ThemedButton onClick={clearAll} variant="danger" title="Clear all items">Clear</ThemedButton>
               </div>
             </div>
@@ -384,6 +384,29 @@ export default function App() {
         <footer className="mt-6 text-xs text-amber-700/60 text-center">
           T2 = T1 raw ×2 · T3+ = (T-1) refined + T raw (×2, ×2, ×3, ×4, ×5, ×5)
           <div className="mt-1">Inventory and snapshots are saved in your browser.</div>
+          {/* Community + support links — small, low-pressure. */}
+          <div className="mt-3 flex items-center justify-center gap-5 flex-wrap">
+            <a
+              href="https://discord.gg/RT6CdKRn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-amber-500/80 hover:text-amber-300 transition"
+              title="Join the community on Discord"
+            >
+              <span>💬</span>
+              <span>Join the Discord</span>
+            </a>
+            <a
+              href="https://ko-fi.com/medjoskambag"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-amber-500/80 hover:text-amber-300 transition"
+              title="If this tool saved you time, you can buy me a coffee"
+            >
+              <span>☕</span>
+              <span>Buy me a coffee</span>
+            </a>
+          </div>
         </footer>
       </div>
 
