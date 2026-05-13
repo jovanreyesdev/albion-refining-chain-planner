@@ -18,6 +18,11 @@ const FAMILY_LABEL_KEY = {
 /**
  * Sub-tab row for the picker. Shows the four material families for the
  * active top tab (Refined or Resource), each with a sample icon.
+ *
+ * Visual treatment:
+ *  - Sits on a darker recessed strip (consistent with TopTabs)
+ *  - Active sub-tab gets a subtle inset highlight + glowing amber underline
+ *  - Item icons get a slight drop-shadow so they pop off the dark background
  */
 export default function SubTabs({
   topTab,
@@ -32,7 +37,14 @@ export default function SubTabs({
   const setActive = topTab === "refined" ? setSubTabRefined : setSubTabResource;
 
   return (
-    <div className="flex border-b border-amber-900/30 bg-stone-900/50 px-2">
+    <div
+      className="flex px-1.5 pt-1.5 gap-1"
+      style={{
+        background:
+          "linear-gradient(180deg, #150c06 0%, #1c1108 100%)",
+        boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(0,0,0,0.6)",
+      }}
+    >
       {families.map((f) => {
         // Pick a sensible sample tier for the icon shown next to the label.
         const sample = iconUrl(
@@ -40,20 +52,53 @@ export default function SubTabs({
           f.hasT1 === false ? 2 : topTab === "refined" ? 2 : 1,
           0,
         );
+        const isActive = active === f.key;
         return (
           <button
             key={f.key}
             onClick={() => setActive(f.key)}
-            className={`px-4 py-2 text-xs font-semibold flex items-center gap-2 transition cursor-pointer ${
-              active === f.key
-                ? "text-amber-100 bg-stone-800/70 border-b-2 border-amber-400"
-                : "text-amber-500/70 hover:text-amber-200"
-            }`}
+            className={`relative px-3 py-1.5 text-xs font-bold min-w-32 flex justify-center items-center gap-2 transition cursor-pointer rounded-t-md
+              ${isActive
+                ? "text-amber-50"
+                : "text-amber-700/90 hover:text-amber-200"}
+            `}
+            style={
+              isActive
+                ? {
+                    background:
+                      "linear-gradient(180deg, rgba(197,159,130,0.4) 0%, rgba(180,140,110,0.2) 100%)",
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,220,180,0.3), inset 0 -1px 0 rgba(0,0,0,0.3)",
+                    textShadow: "0 1px 2px rgba(0,0,0,0.7)",
+                  }
+                : {
+                    textShadow: "0 1px 1px rgba(0,0,0,0.7)",
+                  }
+            }
           >
             {sample && (
-              <img src={sample} alt="" className="w-6 h-6 object-contain" />
+              <img
+                src={sample}
+                alt=""
+                className="w-6 h-6 object-contain"
+                style={{
+                  filter: isActive
+                    ? "drop-shadow(0 1px 2px rgba(0,0,0,0.7))"
+                    : "drop-shadow(0 1px 2px rgba(0,0,0,0.7)) grayscale(0.25) opacity(0.85)",
+                }}
+              />
             )}
-            {tr(FAMILY_LABEL_KEY[f.key] || "") || f.label}
+            <span>{tr(FAMILY_LABEL_KEY[f.key] || "") || f.label}</span>
+            {isActive && (
+              <span
+                className="absolute bottom-0 left-2 right-2 h-[2px] rounded-t"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent 0%, #F2B83B 30%, #FFD771 50%, #F2B83B 70%, transparent 100%)",
+                  boxShadow: "0 0 6px rgba(242,184,59,0.6)",
+                }}
+              />
+            )}
           </button>
         );
       })}
