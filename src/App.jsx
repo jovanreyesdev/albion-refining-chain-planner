@@ -334,26 +334,25 @@ export default function App() {
       }}
     >
       <div className="max-w-[1500px] mx-auto">
-        {/* Header */}
-        <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
-          <div>
+        {/* Header — title on the left, help + language switcher on the
+            right, aligned to the title's baseline. The longer tagline
+            below spans full width so it can wrap naturally. */}
+        <header className="mb-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h1
               className="text-3xl font-bold text-amber-100"
               style={{ textShadow: "0 2px 6px rgba(0,0,0,0.8)" }}
             >
               {t("appTitle")}
             </h1>
-            <p className="text-sm text-amber-200/70 mt-1 max-w-2xl">
-              {t("appTagline")}
-            </p>
+            <div className="flex items-stretch gap-1.5 sm:gap-2 text-xs">
+              <GuideHelpButton />
+              <LanguageSwitcher />
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-xs flex-wrap">
-            <GuideHelpButton />
-            <LanguageSwitcher />
-            <StatPill label={t("statRaw")} value={totals.raw} color="amber" />
-            <StatPill label={t("statRefined")} value={totals.refined} color="sky" />
-            <StatPill label={t("statWillProduce")} value={totals.produced} color="emerald" />
-          </div>
+          <p className="text-sm text-amber-200/70 mt-1 max-w-2xl">
+            {t("appTagline")}
+          </p>
         </header>
 
         {/* Picker + Inventory: side-by-side on wide screens, stacked on narrow */}
@@ -383,13 +382,16 @@ export default function App() {
           </section>
 
           <section className="flex-1 min-w-0 flex flex-col">
-            <div className="flex flex-wrap items-center justify-between mb-2">
+            {/* Inventory header — heading on the left, totals on the right.
+                The stat pills (Raw / Refined / Will Produce) live here so they
+                sit next to the inventory they describe instead of floating up
+                in the page header. */}
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <h2 className="text-lg font-bold text-amber-100">{t("inventoryHeading")}</h2>
-              <div className="flex gap-2">
-                <ThemedButton onClick={saveSnapshot} title={t("btnSave")}>{t("btnSave")}</ThemedButton>
-                <SnapshotMenu snapshots={snapshots} onLoad={loadSnapshot} onDelete={deleteSnapshot} />
-                {/* <ThemedButton onClick={exportJson} title="Export inventory + shopping list as JSON">Export</ThemedButton> */}
-                <ThemedButton onClick={clearAll} variant="danger" title={t("btnClear")}>{t("btnClear")}</ThemedButton>
+              <div className="flex items-stretch gap-1.5 sm:gap-2 text-xs">
+                <StatPill label={t("statRaw")} value={totals.raw} color="amber" />
+                <StatPill label={t("statRefined")} value={totals.refined} color="sky" />
+                <StatPill label={t("statWillProduce")} value={totals.produced} color="emerald" />
               </div>
             </div>
             <div ref={inventoryRef} className="flex-1">
@@ -409,6 +411,14 @@ export default function App() {
                   })
                 }
                 onRemoveSlot={removeSlot}
+                footer={
+                  <>
+                    <ThemedButton onClick={saveSnapshot} title={t("btnSave")}>{t("btnSave")}</ThemedButton>
+                    <SnapshotMenu snapshots={snapshots} onLoad={loadSnapshot} onDelete={deleteSnapshot} />
+                    {/* <ThemedButton onClick={exportJson} title="Export inventory + shopping list as JSON">Export</ThemedButton> */}
+                    <ThemedButton onClick={clearAll} variant="danger" title={t("btnClear")}>{t("btnClear")}</ThemedButton>
+                  </>
+                }
               />
             </div>
           </section>

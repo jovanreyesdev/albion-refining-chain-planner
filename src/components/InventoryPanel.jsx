@@ -13,7 +13,7 @@ const INVENTORY_MIN_SLOTS = 48; // always show at least this many cells
  * always feels like a real bag. Grows in batches of 8 as the user fills it.
  */
 export default function InventoryPanel({
-  slots, onDrop, onDragOver, onClickSlot, onRemoveSlot,
+  slots, onDrop, onDragOver, onClickSlot, onRemoveSlot, footer,
 }) {
   const t = useTranslation();
   // Pad to next row of 8 above the filled count, with a minimum floor.
@@ -28,7 +28,7 @@ export default function InventoryPanel({
     <div
       onDrop={onDrop}
       onDragOver={onDragOver}
-      className="bg-[#C59F82] border-[7px] border-[#AF7F61] p-3 shadow-xl h-full"
+      className="bg-[#C59F82] border-[7px] border-[#AF7F61] p-3 shadow-xl h-full flex flex-col"
     >
       <div
         className="grid gap-1.5"
@@ -52,6 +52,14 @@ export default function InventoryPanel({
       {slots.length === 0 && (
         <div className="text-center text-amber-800 text-sm italic mt-3">
           {t("inventoryEmptyHint")}
+        </div>
+      )}
+      {/* Optional footer toolbar — pushed to the bottom of the panel so
+          action buttons (Save / Snapshots / Clear) sit inside the inventory
+          frame, anchored to its bottom edge. */}
+      {footer && (
+        <div className="mt-auto pt-3 flex flex-wrap gap-2 justify-end">
+          {footer}
         </div>
       )}
     </div>

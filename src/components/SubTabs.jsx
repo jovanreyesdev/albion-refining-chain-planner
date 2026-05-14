@@ -23,6 +23,12 @@ const FAMILY_LABEL_KEY = {
  *  - Sits on a darker recessed strip (consistent with TopTabs)
  *  - Active sub-tab gets a subtle inset highlight + glowing amber underline
  *  - Item icons get a slight drop-shadow so they pop off the dark background
+ *
+ * Mobile behaviour:
+ *  - On narrow viewports the tabs share width equally (flex-1) and shrink
+ *    their padding so all four fit without horizontal overflow.
+ *  - As an extra safety net the row is horizontally scrollable, with the
+ *    scrollbar hidden (see .sub-tabs-row in index.css).
  */
 export default function SubTabs({
   topTab,
@@ -38,11 +44,13 @@ export default function SubTabs({
 
   return (
     <div
-      className="flex px-1.5 pt-1.5 gap-1"
+      className="flex px-1.5 pt-1.5 gap-1 overflow-x-auto sub-tabs-row"
       style={{
         background:
           "linear-gradient(180deg, #150c06 0%, #1c1108 100%)",
         boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(0,0,0,0.6)",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
       }}
     >
       {families.map((f) => {
@@ -57,7 +65,7 @@ export default function SubTabs({
           <button
             key={f.key}
             onClick={() => setActive(f.key)}
-            className={`relative px-3 py-1.5 text-xs font-bold min-w-32 flex justify-center items-center gap-2 transition cursor-pointer rounded-t-md
+            className={`relative px-2 sm:px-3 py-1.5 text-xs font-bold flex-1 sm:flex-none sm:min-w-32 min-w-0 flex justify-center items-center gap-1.5 sm:gap-2 transition cursor-pointer rounded-t-md whitespace-nowrap
               ${isActive
                 ? "text-amber-50"
                 : "text-amber-700/90 hover:text-amber-200"}

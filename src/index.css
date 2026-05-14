@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+/* Hide the horizontal scrollbar on the SubTabs row.
+   Firefox/IE use scrollbar-width / -ms-overflow-style inline on the element;
+   Chrome / Safari need this pseudo-element rule. */
+.sub-tabs-row::-webkit-scrollbar {
+  display: none;
+}

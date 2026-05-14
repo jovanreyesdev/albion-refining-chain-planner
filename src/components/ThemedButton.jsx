@@ -26,7 +26,7 @@ export default function ThemedButton({
         backgroundRepeat: "no-repeat",
         textShadow: "0 1px 2px rgba(0,0,0,0.8)",
       }}
-      className={`px-4 py-2 text-sm min-w-30 tracking-wide cursor-pointer hover:brightness-110 active:brightness-95 transition ${variants[variant]} ${className}`}
+      className={`px-2.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm min-w-0 sm:min-w-30 tracking-wide cursor-pointer hover:brightness-110 active:brightness-95 transition ${variants[variant]} ${className}`}
     >
       {children}
     </button>
