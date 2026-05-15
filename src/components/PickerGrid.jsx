@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import invSlotBg from "../assets/inv-slot.jpg";
 import {
   ENCH_LEVELS, ENCH_STYLE, tierLabel, tierRoman, enchAllowed,
@@ -89,6 +90,22 @@ function PickerSlot({
   url, tier, ench, kind, familyKey, familyLabel,
   onDragStart, onDragEnd, onClick,
 }) {
+  // Track per-image load state so we can fade in once the icon decodes.
+  // Resets to `false` whenever the URL changes (e.g., when the user switches
+  // sub-tabs or top-tabs and a different family's icons are mounted).
+  // We also check `.complete` so cache-hit images don't show a skeleton flash.
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    setLoaded(false);
+    // If the browser already has the image cached, the onLoad event may not
+    // fire — check `.complete` synchronously after mount and skip the skeleton.
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, [url]);
+
   return (
     <div
       draggable={!!url}
@@ -107,12 +124,28 @@ function PickerSlot({
       }}
     >
       {url ? (
-        <img
-          src={url}
-          alt={tierLabel(tier, ench)}
-          draggable={false}
-          className="absolute inset-0 w-full h-full object-contain p-0.5"
-        />
+        <>
+          {/* Skeleton: shown until the icon's onLoad fires. Uses a soft pulse so
+              it reads as "loading" rather than "broken." Sized to match the icon. */}
+          {!loaded && (
+            <div className="absolute inset-0 p-0.5">
+              <div className="w-full h-full rounded animate-pulse bg-stone-700/40" />
+            </div>
+          )}
+          <img
+            ref={imgRef}
+            src={url}
+            alt={tierLabel(tier, ench)}
+            draggable={false}
+            loading="eager"
+            decoding="async"
+            onLoad={() => setLoaded(true)}
+            onError={() => setLoaded(true)}
+            className={`absolute inset-0 w-full h-full object-contain p-0.5 transition-opacity duration-200 ${
+              loaded ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center text-[10px] text-amber-700/60 italic">
           missing

@@ -26,3 +26,25 @@ export function iconUrl(family, tier, ench) {
   const key = `${base}${suffix}`;
   return ICON_MODULES[key] || null;
 }
+
+/**
+ * Warm the browser cache by issuing Image() requests for every bundled icon.
+ * Call once during app startup so subsequent tab switches in the picker show
+ * icons instantly without a skeleton flash.
+ *
+ * Idempotent — safe to call multiple times; the second call hits cache and
+ * returns immediately for each URL.
+ */
+let _preloadStarted = false;
+export function preloadAllIcons() {
+  if (_preloadStarted) return;
+  _preloadStarted = true;
+  // Spread across microtasks so we don't hog the main thread on slow devices.
+  // Loading is parallelizable — the browser will queue/prioritize as needed.
+  Object.values(ICON_MODULES).forEach((url) => {
+    if (!url) return;
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+  });
+}

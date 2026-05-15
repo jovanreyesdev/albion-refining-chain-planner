@@ -24,6 +24,7 @@ import LanguageSwitcher from "./components/LanguageSwitcher";
 import FirstRunGuide, { GuideHelpButton } from "./components/FirstRunGuide";
 import { useTranslation } from "./i18n/useTranslation";
 import { track } from "./analytics";
+import { preloadAllIcons } from "./components/iconResolver";
 
 // =============================================================================
 // REFINING CHAIN PLANNER — Albion Online (Drag & Drop UI)
@@ -58,6 +59,13 @@ export default function App() {
   // picker (step 1) and the inventory (step 2).
   const pickerRef = useRef(null);
   const inventoryRef = useRef(null);
+
+  // Warm the browser image cache for every bundled icon on first mount so
+  // switching tabs in the picker is instant. The bundled URLs are static, so
+  // we only need to do this once per page load.
+  useEffect(() => {
+    preloadAllIcons();
+  }, []);
 
   // -------- persistence --------
   useEffect(() => {
