@@ -7,6 +7,7 @@ export const STORAGE_KEY = "rcp:slots:v2";
 export const SNAPSHOT_KEY = "rcp:snapshots:v2";
 export const CASCADE_MODE_KEY = "rcp:cascadeMode";
 export const SHOPPING_CHECKED_KEY = "rcp:shoppingChecked:v1";
+export const MARKET_SERVER_KEY = "rcp:marketServer:v1";
 
 // Random + time-based ID — collision-resistant enough for inventory slots.
 export const newSlotId = () =>
@@ -46,5 +47,14 @@ export function loadCascadeMode() {
     return JSON.parse(localStorage.getItem(CASCADE_MODE_KEY) || "true");
   } catch {
     return true;
+  }
+}
+
+export function loadMarketServer() {
+  try {
+    const v = localStorage.getItem(MARKET_SERVER_KEY);
+    return v && typeof v === "string" ? v : "americas";
+  } catch {
+    return "americas";
   }
 }

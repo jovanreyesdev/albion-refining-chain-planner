@@ -19,10 +19,13 @@
 // =============================================================================
 
 export const LANGUAGES = [
-  { code: "en", label: "English",   flag: "EN" },
-  { code: "zh", label: "中文",       flag: "🇨🇳" },
-  { code: "th", label: "ไทย",       flag: "🇹🇭" },
-  { code: "id", label: "Indonesia", flag: "🇮🇩" },
+  { code: "en", label: "English",    flag: "EN" },
+  { code: "zh", label: "中文",        flag: "🇨🇳" },
+  { code: "th", label: "ไทย",        flag: "🇹🇭" },
+  { code: "id", label: "Indonesia",  flag: "🇮🇩" },
+  { code: "vi", label: "Tiếng Việt", flag: "🇻🇳" },
+  { code: "es", label: "Español",    flag: "🇪🇸" },
+  { code: "pt", label: "Português",  flag: "🇧🇷" },
 ];
 
 const dict = {
@@ -115,6 +118,23 @@ const dict = {
     guideGotIt: "Got it",
     guideDismiss: "Close",
     guideHelpTooltip: "Show the welcome guide again",
+
+    // Market prices — server picker, totals, tooltips
+    marketLabel: "Market:",
+    marketLoading: "Fetching prices…",
+    marketError: "Failed to fetch prices",
+    marketNoData: "No prices fetched yet",
+    marketUpdated: "Prices updated {age}",
+    marketNoRecentPrice: "no recent price data",
+    marketLoadingShort: "loading…",
+    marketTooltipPriced:
+      "{city}: {price} ea × {amount} = {total} silver ({age})",
+    marketTooltipNoPrice: "{city}: {state}",
+    estimatedTotalCost: "Estimated total cost",
+    cheapestMix: "Cheapest mix: {amount} silver",
+    cheapestMixTooltip: "Sum of each item's cheapest city price",
+    cityTotalTooltip: "{city} total",
+    cityTotalMissing: "({n} item{plural} missing price data)",
   },
 
   // -------------------------------------------------------- SIMPLIFIED CHINESE
@@ -204,6 +224,23 @@ const dict = {
     guideGotIt: "知道了",
     guideDismiss: "关闭",
     guideHelpTooltip: "再次显示欢迎指引",
+
+    // Market prices
+    marketLabel: "市场：",
+    marketLoading: "正在获取价格……",
+    marketError: "获取价格失败",
+    marketNoData: "尚未获取价格",
+    marketUpdated: "价格已更新 {age}",
+    marketNoRecentPrice: "无最新价格数据",
+    marketLoadingShort: "加载中……",
+    marketTooltipPriced:
+      "{city}：{price} 每个 × {amount} = {total} 银币（{age}）",
+    marketTooltipNoPrice: "{city}：{state}",
+    estimatedTotalCost: "预计总花费",
+    cheapestMix: "最低组合：{amount} 银币",
+    cheapestMixTooltip: "各物品在最便宜城市价格之和",
+    cityTotalTooltip: "{city} 总计",
+    cityTotalMissing: "（{n} 件物品缺少价格数据）",
   },
 
   // ------------------------------------------------------------------ THAI
@@ -294,6 +331,23 @@ const dict = {
     guideGotIt: "เข้าใจแล้ว",
     guideDismiss: "ปิด",
     guideHelpTooltip: "แสดงคำแนะนำต้อนรับอีกครั้ง",
+
+    // Market prices
+    marketLabel: "ตลาด:",
+    marketLoading: "กำลังดึงราคา…",
+    marketError: "ดึงราคาไม่สำเร็จ",
+    marketNoData: "ยังไม่ได้ดึงราคา",
+    marketUpdated: "อัปเดตราคาแล้ว {age}",
+    marketNoRecentPrice: "ไม่มีข้อมูลราคาล่าสุด",
+    marketLoadingShort: "กำลังโหลด…",
+    marketTooltipPriced:
+      "{city}: {price} ต่อชิ้น × {amount} = {total} ซิลเวอร์ ({age})",
+    marketTooltipNoPrice: "{city}: {state}",
+    estimatedTotalCost: "ค่าใช้จ่ายรวมโดยประมาณ",
+    cheapestMix: "ผสมถูกที่สุด: {amount} ซิลเวอร์",
+    cheapestMixTooltip: "ผลรวมของราคาที่ถูกที่สุดของแต่ละไอเทมในแต่ละเมือง",
+    cityTotalTooltip: "ยอดรวม {city}",
+    cityTotalMissing: "(ไอเทม {n} ชิ้นไม่มีข้อมูลราคา)",
   },
 
   // ------------------------------------------------------ BAHASA INDONESIA
@@ -384,6 +438,344 @@ const dict = {
     guideGotIt: "Mengerti",
     guideDismiss: "Tutup",
     guideHelpTooltip: "Tampilkan panduan selamat datang lagi",
+
+    // Market prices
+    marketLabel: "Market:",
+    marketLoading: "Mengambil harga…",
+    marketError: "Gagal mengambil harga",
+    marketNoData: "Harga belum diambil",
+    marketUpdated: "Harga diperbarui {age}",
+    marketNoRecentPrice: "tidak ada data harga terbaru",
+    marketLoadingShort: "memuat…",
+    marketTooltipPriced:
+      "{city}: {price} per buah × {amount} = {total} silver ({age})",
+    marketTooltipNoPrice: "{city}: {state}",
+    estimatedTotalCost: "Perkiraan total biaya",
+    cheapestMix: "Campuran termurah: {amount} silver",
+    cheapestMixTooltip: "Jumlah harga termurah setiap item dari semua kota",
+    cityTotalTooltip: "Total {city}",
+    cityTotalMissing: "({n} item tanpa data harga)",
+  },
+
+  // -------------------------------------------------------------- VIETNAMESE
+  vi: {
+    appTitle: "Trình Lập Kế Hoạch Tinh Chế",
+    appTagline:
+      "Bạn mang về một mớ tài nguyên hỗn hợp từ thu thập — nhiều tier khác nhau, nhiều mức enchant khác nhau. Để tinh chế tất cả, bạn cần mua một số vật phẩm tinh chế tier thấp hơn từ market. Nhưng tính toán bằng tay thì chậm và dễ sai. Công cụ này làm việc đó giúp bạn. Kéo vật phẩm của bạn vào, và nó sẽ hiển thị một danh sách mua sắm rõ ràng: chính xác cần mua gì và bao nhiêu.",
+
+    statRaw: "Thô",
+    statRefined: "Tinh chế",
+    statWillProduce: "Sẽ Tạo Ra",
+    statRefinableNow: "Có Thể Tinh Chế Ngay",
+
+    tabResource: "Tài nguyên",
+    tabRefined: "Tinh chế",
+
+    inventoryHeading: "Kho Của Bạn",
+    btnSave: "Lưu",
+    btnExport: "Xuất",
+    btnClear: "Xóa",
+    btnSnapshots: "Bản chụp",
+    snapshotsEmpty: "Chưa có bản chụp nào.",
+    inventoryEmptyHint:
+      "Kéo vật phẩm từ bảng chọn vào các ô này, hoặc nhấp vào vật phẩm để thêm trực tiếp.",
+
+    confirmClear: "Xóa toàn bộ kho?",
+    promptSnapshotName: "Tên bản chụp:",
+    confirmLoadSnapshot: 'Tải "{name}"? Kho hiện tại sẽ bị thay thế.',
+
+    qtyTitleRaw: "Nguyên liệu thô",
+    qtyTitleRefined: "Tinh chế",
+    qtyLabel: "Số lượng",
+    qtyAdd: "Có",
+    qtySave: "Lưu",
+    qtyCancel: "Không",
+    qtyTip: "Mẹo: Enter để xác nhận · Esc để hủy",
+
+    shoppingTitle: "Danh Sách Mua",
+    shoppingDoneOfTotal: "(đã xong {done}/{total}{checkmark})",
+    shoppingResetChecks: "Đặt lại đánh dấu",
+    shoppingAllBalanced:
+      "✓ Tất cả đã đủ — không cần mua gì thêm. (Hoặc kho của bạn trống.)",
+    shoppingBuyLine: "Mua {amount} × {label}",
+    cascadeToggleLabel: "Dùng đầu ra tier thấp cho tier cao",
+    cascadeOn: "(BẬT — mua ít hơn)",
+    cascadeOff: "(TẮT — từng tier riêng lẻ)",
+    cascadeReasonWithCredit:
+      "Cần {baseShortfall} cho {tier} {family}, trừ {credit} từ tinh chế tier thấp hơn",
+    cascadeReasonSimple: "để tinh chế {tier} {family} còn lại",
+    cascadeReasonRaw: "để dùng hết {feeder}",
+    cascadeTooltipOn:
+      "BẬT: Khi bạn tinh chế vật phẩm tier thấp, kết quả được dùng cho vật phẩm tier cao.\n\nVí dụ:\n• Bạn có 70 Hide T7 và 300 Hide T8.\n• Tinh chế 70 Hide T7 tạo ra 14 Leather T7.\n• 14 Leather T7 đó được dùng cho 300 Hide T8.\n• Vậy bạn chỉ cần mua thêm 46 Leather T7 (không phải 60).",
+    cascadeTooltipOff:
+      "TẮT: Mỗi tier được tính riêng. Tinh chế vật phẩm tier thấp KHÔNG giúp gì cho vật phẩm tier cao.\n\nVí dụ:\n• Bạn có 70 Hide T7 và 300 Hide T8.\n• Bước T7: mua 14 Leather T6.\n• Bước T8: mua 60 Leather T7.\n• 14 Leather T7 từ Hide T7 bị bỏ qua.",
+
+    breakdownTitle: "Chi tiết từng chuỗi",
+    breakdownActive: "({n} chuỗi đang hoạt động)",
+    breakdownTier: "Tier",
+    breakdownRawUsed: "Thô đã dùng",
+    breakdownFeederUsed: "Vật phẩm cấp đã dùng",
+    breakdownProduced: "Tạo ra",
+    breakdownLeftAfter: "Còn lại",
+    breakdownNotes: "Ghi chú",
+    breakdownNone: "không có",
+    breakdownNeedFeeder: "Cần {n} {tier} tinh chế",
+    breakdownNeedRaw: "Cần {n} {tier} thô",
+
+    footerRecipe:
+      "T2 = T1 thô ×2 · T3+ = (T-1) tinh chế + T thô (×2, ×2, ×3, ×4, ×5, ×5)",
+    footerStorage: "Kho và bản chụp được lưu trong trình duyệt của bạn.",
+    linkDiscord: "Tham gia Discord",
+    linkKofi: "Mua tôi một ly cà phê",
+
+    famOre: "Quặng",
+    famHide: "Da Thú",
+    famFiber: "Sợi",
+    famWood: "Gỗ",
+    famMetalBars: "Thỏi Kim Loại",
+    famLeather: "Da Thuộc",
+    famCloth: "Vải",
+    famPlank: "Ván",
+
+    enchBase: "Cơ bản",
+
+    guideTitle: "Chào mừng — đây là cách hoạt động",
+    guideStepPicker: "Chọn một vật phẩm từ đây…",
+    guideStepInventory: "…rồi kéo vào kho của bạn.",
+    guideGotIt: "Đã hiểu",
+    guideDismiss: "Đóng",
+    guideHelpTooltip: "Hiển thị hướng dẫn chào mừng lại",
+
+    // Market prices
+    marketLabel: "Market:",
+    marketLoading: "Đang tải giá…",
+    marketError: "Tải giá thất bại",
+    marketNoData: "Chưa có giá",
+    marketUpdated: "Giá cập nhật {age}",
+    marketNoRecentPrice: "không có dữ liệu giá gần đây",
+    marketLoadingShort: "đang tải…",
+    marketTooltipPriced:
+      "{city}: {price} mỗi cái × {amount} = {total} silver ({age})",
+    marketTooltipNoPrice: "{city}: {state}",
+    estimatedTotalCost: "Tổng chi phí ước tính",
+    cheapestMix: "Kết hợp rẻ nhất: {amount} silver",
+    cheapestMixTooltip: "Tổng giá rẻ nhất của mỗi vật phẩm trên các thành phố",
+    cityTotalTooltip: "Tổng {city}",
+    cityTotalMissing: "({n} vật phẩm thiếu dữ liệu giá)",
+  },
+
+  // ----------------------------------------------------------------- SPANISH
+  es: {
+    appTitle: "Planificador de Refinamiento",
+    appTagline:
+      "Vuelves de recolectar con una mezcla de recursos — distintos tiers, distintos encantamientos. Para refinarlos todos, necesitas comprar algunos refinados de tier inferior en el mercado. Pero hacer las cuentas a mano es lento y fácil de equivocar. Esta herramienta lo hace por ti. Arrastra tus objetos aquí y te mostrará una lista de compras clara: exactamente qué comprar y cuánto.",
+
+    statRaw: "Crudo",
+    statRefined: "Refinado",
+    statWillProduce: "Producirá",
+    statRefinableNow: "Refinable Ahora",
+
+    tabResource: "Recursos",
+    tabRefined: "Refinados",
+
+    inventoryHeading: "Tu Inventario",
+    btnSave: "Guardar",
+    btnExport: "Exportar",
+    btnClear: "Limpiar",
+    btnSnapshots: "Capturas",
+    snapshotsEmpty: "Aún no hay capturas.",
+    inventoryEmptyHint:
+      "Arrastra objetos desde el selector a estas casillas, o haz clic en un objeto para añadirlo directamente.",
+
+    confirmClear: "¿Vaciar todo el inventario?",
+    promptSnapshotName: "Nombre de la captura:",
+    confirmLoadSnapshot: '¿Cargar "{name}"? El inventario actual será reemplazado.',
+
+    qtyTitleRaw: "Material crudo",
+    qtyTitleRefined: "Refinado",
+    qtyLabel: "Cantidad",
+    qtyAdd: "Sí",
+    qtySave: "Guardar",
+    qtyCancel: "No",
+    qtyTip: "Consejo: Enter para confirmar · Esc para cancelar",
+
+    shoppingTitle: "Lista de Compras",
+    shoppingDoneOfTotal: "({done}/{total} hechos{checkmark})",
+    shoppingResetChecks: "Reiniciar marcas",
+    shoppingAllBalanced:
+      "✓ Todo balanceado — nada más que comprar. (O tu inventario está vacío.)",
+    shoppingBuyLine: "Comprar {amount} × {label}",
+    cascadeToggleLabel: "Usar producción de tier inferior para tier superior",
+    cascadeOn: "(ENCENDIDO — comprar menos)",
+    cascadeOff: "(APAGADO — cada tier por separado)",
+    cascadeReasonWithCredit:
+      "{baseShortfall} necesarios para {tier} {family}, menos {credit} de la cascada de tier inferior",
+    cascadeReasonSimple: "para refinar el {tier} {family} restante",
+    cascadeReasonRaw: "para usar todo el {feeder}",
+    cascadeTooltipOn:
+      "ENCENDIDO: Cuando refinas objetos de tier inferior, el resultado se usa para los de tier superior.\n\nEjemplo:\n• Tienes 70 T7 Hide y 300 T8 Hide.\n• Refinar 70 T7 Hide produce 14 T7 Leather.\n• Esos 14 T7 Leather se usan para los 300 T8 Hide.\n• Así que solo necesitas comprar 46 T7 Leather más (no 60).",
+    cascadeTooltipOff:
+      "APAGADO: Cada tier se calcula por separado. Refinar objetos de tier inferior NO ayuda con los de tier superior.\n\nEjemplo:\n• Tienes 70 T7 Hide y 300 T8 Hide.\n• Paso T7: comprar 14 T6 Leather.\n• Paso T8: comprar 60 T7 Leather.\n• Los 14 T7 Leather que haces del T7 Hide se ignoran.",
+
+    breakdownTitle: "Desglose por cadena",
+    breakdownActive: "({n} activas)",
+    breakdownTier: "Tier",
+    breakdownRawUsed: "Crudo usado",
+    breakdownFeederUsed: "Alimentador usado",
+    breakdownProduced: "Producido",
+    breakdownLeftAfter: "Resta",
+    breakdownNotes: "Notas",
+    breakdownNone: "ninguno",
+    breakdownNeedFeeder: "Necesita {n} {tier} refinado",
+    breakdownNeedRaw: "Necesita {n} {tier} crudo",
+
+    footerRecipe:
+      "T2 = T1 crudo ×2 · T3+ = (T-1) refinado + T crudo (×2, ×2, ×3, ×4, ×5, ×5)",
+    footerStorage: "El inventario y las capturas se guardan en tu navegador.",
+    linkDiscord: "Únete al Discord",
+    linkKofi: "Invítame un café",
+
+    famOre: "Mineral",
+    famHide: "Cuero",
+    famFiber: "Fibra",
+    famWood: "Madera",
+    famMetalBars: "Lingotes de Metal",
+    famLeather: "Cuero Curtido",
+    famCloth: "Tela",
+    famPlank: "Tablón",
+
+    enchBase: "Base",
+
+    guideTitle: "Bienvenido — así funciona",
+    guideStepPicker: "Elige un objeto desde aquí…",
+    guideStepInventory: "…y arrástralo a tu inventario.",
+    guideGotIt: "Entendido",
+    guideDismiss: "Cerrar",
+    guideHelpTooltip: "Mostrar la guía de bienvenida otra vez",
+
+    // Market prices
+    marketLabel: "Mercado:",
+    marketLoading: "Obteniendo precios…",
+    marketError: "Error al obtener precios",
+    marketNoData: "Aún no hay precios",
+    marketUpdated: "Precios actualizados {age}",
+    marketNoRecentPrice: "sin datos de precio recientes",
+    marketLoadingShort: "cargando…",
+    marketTooltipPriced:
+      "{city}: {price} c/u × {amount} = {total} plata ({age})",
+    marketTooltipNoPrice: "{city}: {state}",
+    estimatedTotalCost: "Costo total estimado",
+    cheapestMix: "Mezcla más barata: {amount} plata",
+    cheapestMixTooltip: "Suma del precio más barato de cada ítem entre ciudades",
+    cityTotalTooltip: "Total de {city}",
+    cityTotalMissing: "({n} ítem{plural} sin datos de precio)",
+  },
+
+  // -------------------------------------------------------- PORTUGUESE (BR)
+  pt: {
+    appTitle: "Planejador de Refinamento",
+    appTagline:
+      "Você volta da coleta com uma mistura de recursos — tiers diferentes, encantamentos diferentes. Para refinar tudo, você precisa comprar alguns itens refinados de tier inferior no mercado. Mas fazer essa conta na mão é lento e fácil de errar. Esta ferramenta faz isso por você. Arraste seus itens aqui e ela mostra uma lista de compras clara: exatamente o que comprar e quanto.",
+
+    statRaw: "Bruto",
+    statRefined: "Refinado",
+    statWillProduce: "Vai Produzir",
+    statRefinableNow: "Refinável Agora",
+
+    tabResource: "Recursos",
+    tabRefined: "Refinados",
+
+    inventoryHeading: "Seu Inventário",
+    btnSave: "Salvar",
+    btnExport: "Exportar",
+    btnClear: "Limpar",
+    btnSnapshots: "Snapshots",
+    snapshotsEmpty: "Nenhum snapshot ainda.",
+    inventoryEmptyHint:
+      "Arraste itens do seletor para estes slots, ou clique em um item para adicionar diretamente.",
+
+    confirmClear: "Limpar todo o inventário?",
+    promptSnapshotName: "Nome do snapshot:",
+    confirmLoadSnapshot: 'Carregar "{name}"? O inventário atual será substituído.',
+
+    qtyTitleRaw: "Material bruto",
+    qtyTitleRefined: "Refinado",
+    qtyLabel: "Quantidade",
+    qtyAdd: "Sim",
+    qtySave: "Salvar",
+    qtyCancel: "Não",
+    qtyTip: "Dica: Enter para confirmar · Esc para cancelar",
+
+    shoppingTitle: "Lista de Compras",
+    shoppingDoneOfTotal: "({done}/{total} feitos{checkmark})",
+    shoppingResetChecks: "Resetar marcações",
+    shoppingAllBalanced:
+      "✓ Tudo balanceado — nada mais para comprar. (Ou seu inventário está vazio.)",
+    shoppingBuyLine: "Comprar {amount} × {label}",
+    cascadeToggleLabel: "Usar produção de tier menor para tier maior",
+    cascadeOn: "(LIGADO — comprar menos)",
+    cascadeOff: "(DESLIGADO — cada tier separado)",
+    cascadeReasonWithCredit:
+      "{baseShortfall} necessários para {tier} {family}, menos {credit} da cascata de tier menor",
+    cascadeReasonSimple: "para refinar o {tier} {family} restante",
+    cascadeReasonRaw: "para usar todo o {feeder}",
+    cascadeTooltipOn:
+      "LIGADO: Quando você refina itens de tier menor, o resultado é usado para itens de tier maior.\n\nExemplo:\n• Você tem 70 T7 Hide e 300 T8 Hide.\n• Refinar 70 T7 Hide produz 14 T7 Leather.\n• Esses 14 T7 Leather são usados para os 300 T8 Hide.\n• Então você só precisa comprar 46 T7 Leather a mais (não 60).",
+    cascadeTooltipOff:
+      "DESLIGADO: Cada tier é calculado separadamente. Refinar itens de tier menor NÃO ajuda com itens de tier maior.\n\nExemplo:\n• Você tem 70 T7 Hide e 300 T8 Hide.\n• Etapa T7: comprar 14 T6 Leather.\n• Etapa T8: comprar 60 T7 Leather.\n• Os 14 T7 Leather que você faz do T7 Hide são ignorados.",
+
+    breakdownTitle: "Detalhamento por cadeia",
+    breakdownActive: "({n} ativas)",
+    breakdownTier: "Tier",
+    breakdownRawUsed: "Bruto usado",
+    breakdownFeederUsed: "Alimentador usado",
+    breakdownProduced: "Produzido",
+    breakdownLeftAfter: "Restante",
+    breakdownNotes: "Notas",
+    breakdownNone: "nenhum",
+    breakdownNeedFeeder: "Precisa de {n} {tier} refinado",
+    breakdownNeedRaw: "Precisa de {n} {tier} bruto",
+
+    footerRecipe:
+      "T2 = T1 bruto ×2 · T3+ = (T-1) refinado + T bruto (×2, ×2, ×3, ×4, ×5, ×5)",
+    footerStorage: "Inventário e snapshots ficam salvos no seu navegador.",
+    linkDiscord: "Entre no Discord",
+    linkKofi: "Pague um café pra mim",
+
+    famOre: "Minério",
+    famHide: "Couro",
+    famFiber: "Fibra",
+    famWood: "Madeira",
+    famMetalBars: "Barras de Metal",
+    famLeather: "Couro Curtido",
+    famCloth: "Tecido",
+    famPlank: "Tábua",
+
+    enchBase: "Base",
+
+    guideTitle: "Bem-vindo — é assim que funciona",
+    guideStepPicker: "Escolha um item daqui…",
+    guideStepInventory: "…e arraste para o seu inventário.",
+    guideGotIt: "Entendi",
+    guideDismiss: "Fechar",
+    guideHelpTooltip: "Mostrar o guia de boas-vindas novamente",
+
+    // Market prices
+    marketLabel: "Mercado:",
+    marketLoading: "Buscando preços…",
+    marketError: "Erro ao buscar preços",
+    marketNoData: "Sem preços ainda",
+    marketUpdated: "Preços atualizados {age}",
+    marketNoRecentPrice: "sem dados de preço recentes",
+    marketLoadingShort: "carregando…",
+    marketTooltipPriced:
+      "{city}: {price} cada × {amount} = {total} silver ({age})",
+    marketTooltipNoPrice: "{city}: {state}",
+    estimatedTotalCost: "Custo total estimado",
+    cheapestMix: "Mistura mais barata: {amount} silver",
+    cheapestMixTooltip: "Soma do preço mais barato de cada item entre as cidades",
+    cityTotalTooltip: "Total de {city}",
+    cityTotalMissing: "({n} item{plural} sem dados de preço)",
   },
 };
 

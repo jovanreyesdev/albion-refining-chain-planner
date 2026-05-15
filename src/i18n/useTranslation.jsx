@@ -26,6 +26,11 @@ function detectBrowserLang() {
   if (nav.startsWith("zh")) return "zh";
   if (nav.startsWith("th")) return "th";
   if (nav.startsWith("id") || nav.startsWith("ms")) return "id";
+  if (nav.startsWith("vi")) return "vi";
+  if (nav.startsWith("es")) return "es";
+  // Match pt-BR, pt-PT and bare "pt" — Brazilian PT is the largest Albion PT
+  // community by far, so the translation uses Brazilian phrasing.
+  if (nav.startsWith("pt")) return "pt";
   return "en";
 }
 
